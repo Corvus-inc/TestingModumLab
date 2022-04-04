@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Naliv/NalivMain.unity
+    guid: 186757d4b5cf9bd4ca01d4ef4d7d9a0a
   m_configObjects: {}
