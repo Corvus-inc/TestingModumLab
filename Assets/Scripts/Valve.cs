@@ -1,25 +1,26 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
 
 public class Valve : MonoBehaviour, IObservable<ValveStatus>
 {
-    private List<IObserver<ValveStatus>> observers = new List<IObserver<ValveStatus>>();
+    private readonly List<IObserver<ValveStatus>> observers = new List<IObserver<ValveStatus>>();
     
-    [SerializeField] private InputManager _input;
-    [Range(MINRangeRotate, MAXRangeRotate)] [SerializeField] private float currentRangeRotate;
     [SerializeField] private Transform transformValve;
 
     public int _id;
+    
+    [Range(MINRangeRotate, MAXRangeRotate)] private float _currentRangeRotate;
     private Quaternion _rotationValve;
     private Vector3 _lastPoint;
     private Vector3 _viewPoint;
     private const float MINRangeRotate = 0; 
     private const float MAXRangeRotate = 720;
 
-    public ValveStatus valveStatus => new ValveStatus() {Id = _id, CurrentRangeRotate = currentRangeRotate};
+    public Vector3 LastPoint { set => _lastPoint = value; }
+
+    public ValveStatus valveStatus => new ValveStatus() {Id = _id, CurrentRangeRotate = _currentRangeRotate};
 
     public Vector3 ValveViewpoint
     {
@@ -30,19 +31,11 @@ public class Valve : MonoBehaviour, IObservable<ValveStatus>
             return _viewPoint;
         }
     }
-    private float CurrentRangeRotate => currentRangeRotate;
+    private float CurrentRangeRotate => _currentRangeRotate;
     
     void Start()
     {
         _rotationValve = transformValve.rotation;
-        
-        //TODO Move to ValveHandler
-        _input.RightButtonUp += vector3 =>
-        {
-            _lastPoint = vector3;
-            _input.RightButton -= EulerRotation;
-        };
-        
         _lastPoint = _rotationValve.eulerAngles;
     }
     
@@ -56,16 +49,16 @@ public class Valve : MonoBehaviour, IObservable<ValveStatus>
         //Find direction
         angle = Mathf.Sign(Vector3.Cross(_lastPoint, currentPoint).z) * -angle;
         //Block for rotation
-        var rotates = currentRangeRotate + angle;
+        var rotates = _currentRangeRotate + angle;
         if (rotates< MINRangeRotate) angle = 0;
         else if (rotates > MAXRangeRotate) angle = 0;
         
-        currentRangeRotate += angle;
+        _currentRangeRotate += angle;
         
         foreach (var observer in observers)
             observer.OnNext(valveStatus);
         
-        var vector = new Vector3(transformValve.rotation.eulerAngles.x, currentRangeRotate, transformValve.rotation.eulerAngles.z);
+        var vector = new Vector3(transformValve.rotation.eulerAngles.x, _currentRangeRotate, transformValve.rotation.eulerAngles.z);
         transformValve.rotation = Quaternion.Euler(vector);
 
         _lastPoint = currentPoint;

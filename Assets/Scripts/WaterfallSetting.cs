@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class WaterfallSetting : MonoBehaviour, IWaterFlow
+    public class WaterfallSetting : IWaterFlow
     {
         private const float MinStartSpeedWaterfall = 0f;
         private const float MaxStartSpeedWaterfall = 9f;
@@ -13,13 +13,13 @@ namespace DefaultNamespace
         private const float MinSimulationWaterfall = 0.5f;
         private const float MaxSimulationWaterfall = 1f;
 
-        [Range(MinStartSpeedWaterfall, MaxStartSpeedWaterfall)] [SerializeField]
+        [Range(MinStartSpeedWaterfall, MaxStartSpeedWaterfall)]
         private float startSpeedWaterfall;
 
-        [Range(MinStartSizeWaterfall, MaxStartSizeWaterfall)] [SerializeField]
+        [Range(MinStartSizeWaterfall, MaxStartSizeWaterfall)]
         private float startSizeWaterfall;
 
-        [Range(MinSimulationWaterfall, MaxSimulationWaterfall)] [SerializeField]
+        [Range(MinSimulationWaterfall, MaxSimulationWaterfall)]
         private float simulationWaterfall;
 
         public float StartSpeed => startSpeedWaterfall;

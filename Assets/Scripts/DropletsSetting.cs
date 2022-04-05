@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class DropletsSetting : MonoBehaviour, IWaterFlow
+    public class DropletsSetting : IWaterFlow
     {
         private const float MinStartSpeedDroplets = 0f;
         private const float MaxStartSpeedDroplets = 9f;
@@ -13,13 +13,13 @@ namespace DefaultNamespace
         private const float MinSimulationDroplets = 0.5f;
         private const float MaxSimulationDroplets = 1f;
 
-        [Range(MinStartSpeedDroplets, MaxStartSpeedDroplets)] [SerializeField]
+        [Range(MinStartSpeedDroplets, MaxStartSpeedDroplets)]
         private float startSpeedDroplets;
 
-        [Range(MinStartSizeDroplets, MaxStartSizeDroplets)] [SerializeField]
+        [Range(MinStartSizeDroplets, MaxStartSizeDroplets)]
         private float startSizeDroplets;
 
-        [Range(MinSimulationDroplets, MaxSimulationDroplets)] [SerializeField]
+        [Range(MinSimulationDroplets, MaxSimulationDroplets)]
         private float simulationDroplets;
 
         public float StartSpeed => startSpeedDroplets;

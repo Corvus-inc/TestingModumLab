@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
 public class Waterfall : MonoBehaviour
 {
-    [Range(0, 1)] [SerializeField] private float scaleWave;
-    
-    [SerializeField] private Transform radiusWave;
-    [SerializeField] private Transform levelWave;
+   [SerializeField] private ParticleSystem waterfall;
+   [SerializeField] private ParticleSystem droplets;
 
-    private void Update()
-    {
-        radiusWave.localScale = new Vector3(scaleWave, scaleWave, scaleWave);
-        levelWave.localScale = new Vector3(scaleWave, scaleWave, scaleWave);
-    }
+   public ParticleSystem WaterfallEffect => waterfall;
+   public ParticleSystem DropletsEffect => droplets;
 }

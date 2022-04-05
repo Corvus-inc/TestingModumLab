@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class PourController : MonoBehaviour, IObserver<ValveStatus>
 {
-    [SerializeField] private Transform fluid;
-    [SerializeField] private Material fluidMaterial;
+    private Transform _fluid;
+    private Material _fluidMaterial;
 
     private float _rangeFluid;
     private float _pourSpeed;
@@ -16,23 +16,33 @@ public class PourController : MonoBehaviour, IObserver<ValveStatus>
 
     private float _greenCount;
     private float _blueCount;
+    
+    public Transform Fluid
+    {
+        set => _fluid = value;
+    }
+
+    public Material FluidMaterial
+    {
+        set => _fluidMaterial = value;
+    }
     private void Start()
     {
         _pourSpeed = 100000;
-        fluid.localScale = new Vector3(1, 0, 1);
+        _fluid.localScale = new Vector3(1, 0, 1);
     }
     
     private void Update()
     {
-        if(fluid.localScale.y >= 0.9f)
+        if(_fluid.localScale.y >= 0.9f)
             return;
         
         _rangeFluid  = _valvesPercents.Sum(percent => percent.Value);
         _greenCount += _valvesPercents[0];
         _blueCount += _valvesPercents[1];
-        fluid.localScale += new Vector3(0, _rangeFluid*Time.deltaTime/_pourSpeed, 0);
+        _fluid.localScale += new Vector3(0, _rangeFluid*Time.deltaTime/_pourSpeed, 0);
         
-        fluidMaterial.color = Color.Lerp(Color.blue, Color.yellow,  _greenCount/((_greenCount+_blueCount)/100)/100);
+        _fluidMaterial.color = Color.Lerp(Color.blue, Color.green,  _greenCount/((_greenCount+_blueCount)/100)/100);
     }
 
     public void OnCompleted()
